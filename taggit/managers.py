@@ -242,8 +242,9 @@ class TaggableManager(RelatedField, Field):
 
     def __get__(self, instance, model):
         if instance is not None and instance.pk is None:
-            raise ValueError("%s objects need to have a primary key value "
-                             "before you can access their tags." % model.__name__)
+            return None #fixes an issue when DRF wants to access a model tag fields when the model was not saved
+            #raise ValueError("%s objects need to have a primary key value "
+            #                 "before you can access their tags." % model.__name__)
         manager = self.manager(
             through=self.through,
             model=model,
